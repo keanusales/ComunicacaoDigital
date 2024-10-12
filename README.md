@@ -1,2 +1,2 @@
 # Comunicação Digital
-Repositório com os códigos desenvolvidos da disciplina de Fundamentos de Comunicação Digital
+Repositório com os códigos desenvolvidos na disciplina de Fundamentos de Comunicação Digital
