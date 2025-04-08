@@ -35,12 +35,12 @@ uint64 decoder(uint64 data, uint64 gen) {
 
 PyObject* applyfunc(functype func, PyObject* args) {
   PyObject *odata, *ogen;
-  if (!PyArg_UnpackTuple(args, "f", 2, 2, &odata, &ogen)) return NULL;
+  if (!PyArg_UnpackTuple(args, 0, 2, 2, &odata, &ogen)) return NULL;
   uint64 data = PyLong_AsUnsignedLongLong(odata);
   uint64 gen = PyLong_AsUnsignedLongLong(ogen);
   if (PyErr_Occurred()) return NULL;
   if (gen > data) {
-    PyErr_SetString(PyExc_ValueError, "Gen must be less than data.");
+    PyErr_SetString(PyExc_ValueError, "Gen is greater than data!");
     return NULL;
   }
   uint64 result = func(data, gen);
