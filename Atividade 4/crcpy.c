@@ -4,6 +4,7 @@
 
 typedef unsigned long long uint64;
 typedef unsigned char uint8;
+typedef uint64 (*functype)(uint64, uint64);
 
 uint8 order(uint64 data) {
   uint8 bits = 0;
@@ -32,18 +33,22 @@ uint64 decoder(uint64 data, uint64 gen) {
   return data;
 }
 
-static PyObject* py_encoder(PyObject* self, PyObject* args) {
-  uint64 data, gen;
-  if (!PyArg_ParseTuple(args, "KK", &data, &gen)) return NULL;
-  uint64 result = encoder(data, gen);
+PyObject* applyfunc(functype func, PyObject* args) {
+  PyObject *odata, *ogen;
+  if (!PyArg_UnpackTuple(args, "applyfunc", 2, 2, &odata, &ogen)) return NULL;
+  uint64 data = PyLong_AsUnsignedLongLong(odata);
+  uint64 gen = PyLong_AsUnsignedLongLong(ogen);
+  if (PyErr_Occurred()) return NULL;
+  uint64 result = func(data, gen);
   return PyLong_FromUnsignedLongLong(result);
 }
 
+static PyObject* py_encoder(PyObject* self, PyObject* args) {
+  return applyfunc(encoder, args);
+}
+
 static PyObject* py_decoder(PyObject* self, PyObject* args) {
-  uint64 data, gen;
-  if (!PyArg_ParseTuple(args, "KK", &data, &gen)) return NULL;
-  uint64 result = decoder(data, gen);
-  return PyLong_FromUnsignedLongLong(result);
+  return applyfunc(decoder, args);
 }
 
 static PyMethodDef CRCMethods[] = {
@@ -52,7 +57,7 @@ static PyMethodDef CRCMethods[] = {
   {NULL, NULL, 0, NULL}
 };
 
-static struct PyModuleDef crcModule = {
+static PyModuleDef crcModule = {
   PyModuleDef_HEAD_INIT, "crc", NULL, -1, CRCMethods
 };
 
