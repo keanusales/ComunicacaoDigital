@@ -1,6 +1,6 @@
 from setuptools import setup, Extension
 
-module = Extension("crc", ["crc.c"])
+module = Extension("crc", ["crcpy.c"])
 
 setup(
   name = "crc", version = "1.0",
