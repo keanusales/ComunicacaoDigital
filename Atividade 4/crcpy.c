@@ -1,5 +1,3 @@
-#pragma once
-
 #include <Python.h>
 
 typedef unsigned long long uint64;
