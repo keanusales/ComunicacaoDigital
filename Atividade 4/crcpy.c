@@ -54,9 +54,9 @@ static PyObject* py_decoder(PyObject* self, PyObject* args) {
 }
 
 static PyMethodDef CRCMethods[] = {
-  {"encoder", py_encoder, METH_VARARGS, NULL},
-  {"decoder", py_decoder, METH_VARARGS, NULL},
-  {NULL, NULL, 0, NULL}
+  {"encoder", py_encoder, METH_VARARGS},
+  {"decoder", py_decoder, METH_VARARGS},
+  {NULL, NULL}
 };
 
 static PyModuleDef crcModule = {
