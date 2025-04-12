@@ -1,7 +1,7 @@
 #include <Python.h>
 
-typedef unsigned long long uint64;
 typedef unsigned char uint8;
+typedef unsigned long long uint64;
 typedef uint64 (*functype)(uint64, uint64);
 
 uint8 order(uint64 data) {
@@ -37,12 +37,7 @@ PyObject* applyfunc(functype func, PyObject* args) {
   uint64 data = PyLong_AsUnsignedLongLong(odata);
   uint64 gen = PyLong_AsUnsignedLongLong(ogen);
   if (PyErr_Occurred()) return NULL;
-  if (gen > data) {
-    PyErr_SetString(PyExc_ValueError, "Gen is greater than data!");
-    return NULL;
-  }
-  uint64 result = func(data, gen);
-  return PyLong_FromUnsignedLongLong(result);
+  return PyLong_FromUnsignedLongLong(func(data, gen));
 }
 
 static PyObject* py_encoder(PyObject* self, PyObject* args) {
@@ -54,9 +49,9 @@ static PyObject* py_decoder(PyObject* self, PyObject* args) {
 }
 
 static PyMethodDef CRCMethods[] = {
-  {"encoder", py_encoder, METH_VARARGS},
-  {"decoder", py_decoder, METH_VARARGS},
-  {NULL, NULL}
+  {"encoder", py_encoder, METH_VARARGS, NULL},
+  {"decoder", py_decoder, METH_VARARGS, NULL},
+  {NULL, NULL, 0, NULL}
 };
 
 static PyModuleDef crcModule = {
