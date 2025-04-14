@@ -2,7 +2,7 @@
 
 typedef unsigned char uint8;
 typedef unsigned long long uint64;
-typedef uint64 (*functype)(uint64, uint64);
+typedef uint64 (*crcfunc)(uint64, uint64);
 
 uint8 order(uint64 data) {
   uint8 bits = 0;
@@ -31,7 +31,7 @@ uint64 decoder(uint64 data, uint64 gen) {
   return data;
 }
 
-PyObject* applyfunc(functype func, PyObject* args) {
+PyObject* applyfunc(crcfunc func, PyObject* args) {
   PyObject *odata, *ogen;
   if (!PyArg_UnpackTuple(args, 0, 2, 2, &odata, &ogen)) return NULL;
   uint64 data = PyLong_AsUnsignedLongLong(odata);
